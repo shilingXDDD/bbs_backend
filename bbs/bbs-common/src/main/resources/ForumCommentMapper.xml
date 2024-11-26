@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbs.common.mapper.ForumCommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.bbs.common.entity.ForumComment">
+        <id column="id" property="id" />
+        <result column="forum_id" property="forumId" />
+        <result column="user_id" property="userId" />
+        <result column="content" property="content" />
+        <result column="create_time" property="createTime" />
+        <result column="content_origin" property="contentOrigin" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, forum_id, user_id, content, create_time, content_origin
+    </sql>
+
+    <select id="list" resultType="com.bbs.common.vo.ForumCommentListVo" parameterType="java.lang.Integer">
+        select t1.*, t2.name as userName from forum_comment t1 left join user t2 on t1.user_id = t2.id
+        where t1.forum_id=#{forumId}
+        order by t1.create_time desc
+    </select>
+</mapper>

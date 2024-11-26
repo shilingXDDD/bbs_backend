@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbs.common.mapper.ForumMapper">
+
+    <resultMap id="BaseResultMap" type="com.bbs.common.entity.Forum">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="cover_image" property="coverImage" />
+        <result column="user_id" property="userId" />
+        <result column="content" property="content" />
+        <result column="delete_flag" property="deleteFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="state" property="state" />
+        <result column="views" property="views" />
+        <result column="collects" property="collects" />
+        <result column="content_origin" property="contentOrigin" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, title, cover_image, user_id, content, delete_flag, create_time, update_time, state, views, collects, content_origin
+    </sql>
+
+    <select id="list" resultType="com.bbs.common.vo.ForumListVo" parameterType="com.bbs.common.dto.ForumListDTO">
+        select t1.*, t2.name as userName from forum t1 left join user t2 on t1.user_id=t2.id
+
+        <where>
+            <if test="listDTO.title != null and listDTO.title != ''">
+                and t1.title = #{listDTO.title}
+            </if>
+            and t1.delete_flag = 0 and t1.state = 1
+        </where>
+
+        order by t1.create_time desc
+    </select>
+</mapper>
